@@ -23,5 +23,5 @@ select.so { background: #fff; border: 1px solid var(--line); border-radius: 14px
 .algn { color: var(--mut); font-size: 13px; margin: 10px 0 14px }
 .alg-g { display: grid; grid-template-columns: 1fr 1fr; gap: 16px }
 .alg h4 { font-size: 14px; margin-bottom: 8px }
-.alg pre { background: var(--soft); border-radius: 12px; padding: 12px 14px; font: 12px/1.6 Consolas, Menlo, monospace; max-height: 340px; overflow: auto; white-space: pre; color: var(--ink) }
+.alg pre { background: var(--soft); border-radius: 12px; padding: 12px 14px; font: 12px/1.6 Consolas, Menlo, monospace; max-height: 340px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink) }
 @media (max-width: 800px) { .alg-g { grid-template-columns: 1fr } }
