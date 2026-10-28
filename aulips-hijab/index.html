@@ -99,15 +99,6 @@
       <div class="chips" id="chips"></div>
       <div class="grid" id="grid"></div>
       <p id="empty" style="display:none;text-align:center;padding:60px 0;color:var(--mut)">Belum ada hijab yang cocok. Coba kata kunci lain atau pilih Semua Hijab.</p>
-      <!-- Log algoritma (Sorting & Searching) -->
-      <details class="alg" id="alg" open>
-        <summary><i class="fa-solid fa-terminal"></i> Log Algoritma: Linear Search &amp; Bubble Sort</summary>
-        <p class="algn">Array <b>P</b> berisi struct produk. Setiap kali kamu mengetik di kolom cari, memilih kategori, atau mengganti urutan, proses di bawah ini dijalankan dan dicatat.</p>
-        <div class="alg-g">
-          <div><h4>1. Log Searching (Linear Search)</h4><pre id="algS"></pre></div>
-          <div><h4>2. Log Sorting (Bubble Sort)</h4><pre id="algO"></pre></div>
-        </div>
-      </details>
     </div>
   </section>
 
@@ -246,13 +237,173 @@
   <div class="md w">
     <button class="xx" onclick="M('mng',0)" aria-label="Tutup"><i class="fa-solid fa-xmark"></i></button><h3>Kelola katalog</h3>
     <div class="mh"><button class="pill" style="background:var(--tc);color:#fff" onclick="M('mng',0);openAdm()"><i class="fa-solid fa-plus"></i> Tambah produk</button><label class="pill up"><i class="fa-regular fa-image"></i> Foto beranda<input type="file" accept="image/*" hidden onchange="up(event,'hero')"></label><label class="pill up"><i class="fa-solid fa-qrcode"></i> Gambar QRIS<input type="file" accept="image/*" hidden onchange="up(event,'qris')"></label></div>
-    <div id="mgl"></div>
+    <!-- Tab admin: Produk | Log Algoritma -->
+    <div class="atabs" role="tablist">
+      <button type="button" id="atP" class="atab on" role="tab" onclick="admTab('P')"><i class="fa-solid fa-box"></i> Produk</button>
+      <button type="button" id="atL" class="atab" role="tab" onclick="admTab('L')"><i class="fa-solid fa-terminal"></i> Log Algoritma</button>
+    </div>
+    <div id="panP"><div id="mgl"></div></div>
+    <!-- Log algoritma (Sorting & Searching) - khusus admin -->
+    <div id="panL" style="display:none">
+      <div class="lgseg">
+        <button type="button" id="lgBO" class="on" onclick="lgTab('O')"><i class="fa-solid fa-arrow-down-wide-short"></i> Sorting (Bubble Sort)</button>
+        <button type="button" id="lgBS" onclick="lgTab('S')"><i class="fa-solid fa-magnifying-glass"></i> Searching (Linear Search)</button>
+      </div>
+
+      <section id="lgPO">
+        <p class="lgint"><b>Cara kerja:</b> Bubble Sort membandingkan dua produk yang bersebelahan. Kalau urutannya belum benar, posisinya <b>ditukar</b>. Langkah ini diulang per <b>pass</b> sampai tidak ada lagi yang perlu ditukar.</p>
+        <div id="vO"></div>
+        <pre id="algO" class="lgraw"></pre>
+      </section>
+
+      <section id="lgPS" style="display:none">
+        <p class="lgint"><b>Cara kerja:</b> Linear Search memeriksa produk satu per satu dari awal sampai akhir. Produk yang cocok dengan kata kunci dan kategori akan ditampilkan ke pembeli.</p>
+        <div id="vS"></div>
+        <pre id="algS" class="lgraw"></pre>
+      </section>
+    </div>
   </div>
 </div>
+<style>
+.atabs{display:flex;gap:8px;margin:18px 0 16px;border-bottom:1px solid var(--line)}
+.atab{border:0;background:none;padding:10px 16px;font:inherit;font-weight:600;color:var(--mut);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px}
+.atab.on{color:var(--tc);border-bottom-color:var(--tc)}
+#panL .alg-g{margin-top:14px}
+#panL pre{max-height:60vh;overflow:auto}
+</style>
+<script>
+function admTab(t){
+  document.getElementById('panP').style.display=t==='P'?'':'none';
+  document.getElementById('panL').style.display=t==='L'?'':'none';
+  document.getElementById('atP').classList.toggle('on',t==='P');
+  document.getElementById('atL').classList.toggle('on',t==='L');
+}
+</script>
+<style>
+.lgraw{display:none}
+.lgseg{display:inline-flex;gap:4px;background:#f4ece7;padding:4px;border-radius:999px;margin-bottom:14px;flex-wrap:wrap}
+.lgseg button{border:0;background:none;font:inherit;font-weight:600;font-size:14px;padding:8px 16px;border-radius:999px;color:var(--mut);cursor:pointer}
+.lgseg button.on{background:#fff;color:var(--tc);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.lgint{margin:0 0 16px;padding:12px 14px;background:#faf5f1;border-left:4px solid var(--tc);border-radius:8px;font-size:14px;line-height:1.55}
+.lgst{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px}
+.lgst div{background:#f4ece7;border-radius:12px;padding:10px 14px}
+.lgst small{display:block;font-size:12px;color:var(--mut)}
+.lgst b{font-size:18px}
+.lgh{font-weight:700;margin:18px 0 8px;font-size:15px}
+.lgchips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.lgchips .c{background:#fff;border:1px solid var(--line);border-radius:8px;min-width:34px;text-align:center;padding:4px 10px;font-weight:700;font-size:14px}
+.lgchips i{color:var(--mut);font-size:11px}
+.lgrow{display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:#fff}
+.lgrow .no{width:28px;height:28px;border-radius:50%;background:#f4ece7;display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+.lgrow .nm{flex:1;font-weight:600}
+.lgrow.ok{border-color:#9fd3b2;background:#f1faf4}
+.lgrow.no-m{opacity:.6}
+.bd{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:4px 12px;border-radius:999px;white-space:nowrap}
+.bd.g{background:#dff3e6;color:#216a3d}
+.bd.x{background:#eee;color:#666}
+.bd.sw{background:#fde3c8;color:#a1480a}
+.lgpass{border:1px solid var(--line);border-radius:14px;margin-bottom:10px;background:#fff;overflow:hidden}
+.lgpass>summary{cursor:pointer;padding:12px 16px;font-weight:700;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.lgpass>summary small{font-weight:500;color:var(--mut)}
+.lgpass .bdy{padding:4px 16px 16px}
+.cmp{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;margin-bottom:8px;background:#faf7f4}
+.cmp.sw{background:#fff1e3}
+.cmp .pr small{display:block;color:var(--mut);font-size:12px}
+.cmp .pr b{display:block;font-size:14px}
+.cmp .pr span{font-size:12.5px;color:var(--mut)}
+.cmp .mid{text-align:center}
+.lgdone{margin-top:12px;padding:10px 14px;background:#dff3e6;color:#216a3d;border-radius:10px;font-size:14px;font-weight:600}
+@media(max-width:600px){.cmp{grid-template-columns:1fr}.cmp .mid{text-align:left}}
+</style>
+<script>
+function lgTab(t){
+  document.getElementById('lgPO').style.display=t==='O'?'':'none';
+  document.getElementById('lgPS').style.display=t==='S'?'':'none';
+  document.getElementById('lgBO').classList.toggle('on',t==='O');
+  document.getElementById('lgBS').classList.toggle('on',t==='S');
+}
+(function(){
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]});}
+  function chips(str){
+    var a=String(str).split(',').map(function(x){return x.trim()}).filter(Boolean);
+    return '<div class="lgchips">'+a.map(function(x){return '<span class="c">'+esc(x)+'</span>'}).join('<i class="fa-solid fa-chevron-right"></i>')+'</div>';
+  }
+  function stat(l,v){return '<div><small>'+esc(l)+'</small><b>'+esc(v)+'</b></div>';}
+
+  /* ---------- Searching ---------- */
+  function renderS(){
+    var pre=document.getElementById('algS'),box=document.getElementById('vS');
+    var L=pre.textContent.split('\n'),n='',kw='',cat='',rows=[],chk='',fnd='';
+    L.forEach(function(l){
+      var m;
+      if(l.indexOf('Linear Search')===0&&(m=l.match(/n\s*=\s*(\d+)/)))n=m[1];
+      else if(m=l.match(/Kata kunci:\s*"(.*?)"\s*\|\s*Kategori:\s*(.+)/)){kw=m[1];cat=m[2];}
+      else if(m=l.match(/^\s*\[(\d+)\]\s+(.*?)\s+->\s+(.+)$/))rows.push({i:m[1],nm:m[2],r:m[3].trim()});
+      else if(m=l.match(/Selesai:\s*(\d+)\s*elemen diperiksa,\s*(\d+)/)){chk=m[1];fnd=m[2];}
+    });
+    if(!rows.length){box.innerHTML='';pre.style.display=pre.textContent.trim()?'block':'none';return;}
+    pre.style.display='none';
+    var h='<div class="lgst">'+stat('Kata kunci',kw?'"'+kw+'"':'(kosong)')+stat('Kategori',cat)+stat('Diperiksa',(chk||rows.length)+' produk')+stat('Ditemukan',(fnd||rows.filter(function(r){return r.r.toLowerCase()==='cocok'}).length)+' produk')+'</div>';
+    h+='<div class="lgh">Pemeriksaan satu per satu</div>';
+    rows.forEach(function(r){
+      var ok=r.r.toLowerCase()==='cocok';
+      h+='<div class="lgrow '+(ok?'ok':'no-m')+'"><span class="no">'+esc(r.i)+'</span><span class="nm">'+esc(r.nm)+'</span>'+
+         (ok?'<span class="bd g"><i class="fa-solid fa-check"></i> Cocok</span>':'<span class="bd x"><i class="fa-solid fa-xmark"></i> Tidak cocok</span>')+'</div>';
+    });
+    box.innerHTML=h;
+  }
+
+  /* ---------- Sorting ---------- */
+  function prod(t){var m=t.match(/^(.*?)\s*\(([^()]*)\)\s*$/);return m?{nm:m[1],d:m[2]}:{nm:t,d:''};}
+  function renderO(){
+    var pre=document.getElementById('algO'),box=document.getElementById('vO');
+    var L=pre.textContent.split('\n'),n='',init='',passes=[],cur=null,sum=null;
+    L.forEach(function(l){
+      var m;
+      if(m=l.match(/^Bubble Sort.*?n\s*=\s*(\d+)/))n=m[1];
+      else if(m=l.match(/^Awal\s*:\s*(.*?)\s*\(/))init=m[1];
+      else if(m=l.match(/^--\s*Pass\s*(\d+)\s*--/)){cur={n:m[1],c:[],res:'',early:false};passes.push(cur);}
+      else if(m=l.match(/a\[(\d+)\]\s+(.*?)\s+vs\s+a\[(\d+)\]\s+(.*?)\s+->\s+(\S+)/)){if(cur)cur.c.push({i:m[1],a:prod(m[2]),j:m[3],b:prod(m[4]),sw:m[5].toUpperCase()==='TUKAR'});}
+      else if(m=l.match(/Hasil pass\s*\d+:\s*(.*)/)){if(cur)cur.res=m[1];}
+      else if(/Tidak ada penukaran/i.test(l)){if(cur)cur.early=true;}
+      else if(m=l.match(/Selesai:\s*(\d+)\s*perbandingan,\s*(\d+)\s*penukaran/))sum={c:m[1],s:m[2]};
+    });
+    if(!passes.length){box.innerHTML='';pre.style.display=pre.textContent.trim()?'block':'none';return;}
+    pre.style.display='none';
+    var tc=0,ts=0;passes.forEach(function(p){tc+=p.c.length;p.c.forEach(function(x){if(x.sw)ts++;});});
+    if(sum){tc=sum.c;ts=sum.s;}
+    var h='<div class="lgst">'+stat('Jumlah produk',n+' produk')+stat('Jumlah pass',passes.length)+stat('Perbandingan',tc+' kali')+stat('Penukaran',ts+' kali')+'</div>';
+    h+='<div class="lgh">Urutan awal (ID produk)</div>'+chips(init);
+    h+='<div class="lgh">Langkah per pass <small style="font-weight:500;color:var(--mut)">(klik untuk buka/tutup)</small></div>';
+    passes.forEach(function(p,idx){
+      var sw=p.c.filter(function(x){return x.sw}).length;
+      h+='<details class="lgpass"'+(idx===0?' open':'')+'><summary>Pass '+esc(p.n)+' <small>'+p.c.length+' perbandingan &middot; '+sw+' ditukar</small></summary><div class="bdy">';
+      p.c.forEach(function(x){
+        var d1=x.a.d?'<span>'+esc(x.a.d)+'</span>':'',d2=x.b.d?'<span>'+esc(x.b.d)+'</span>':'';
+        h+='<div class="cmp'+(x.sw?' sw':'')+'"><div class="pr"><small>Posisi '+esc(x.i)+'</small><b>'+esc(x.a.nm)+'</b>'+d1+'</div>'+
+           '<div class="mid">'+(x.sw?'<span class="bd sw"><i class="fa-solid fa-right-left"></i> Ditukar</span>':'<span class="bd g"><i class="fa-solid fa-check"></i> Sudah benar</span>')+'</div>'+
+           '<div class="pr"><small>Posisi '+esc(x.j)+'</small><b>'+esc(x.b.nm)+'</b>'+d2+'</div></div>';
+      });
+      if(p.res)h+='<div class="lgh" style="margin-top:12px">Urutan setelah pass '+esc(p.n)+'</div>'+chips(p.res);
+      if(p.early)h+='<div class="lgdone"><i class="fa-solid fa-circle-check"></i> Tidak ada penukaran, jadi pengurutan selesai lebih awal.</div>';
+      h+='</div></details>';
+    });
+    box.innerHTML=h;
+  }
+
+  function watch(id,fn){
+    var el=document.getElementById(id);if(!el)return;
+    new MutationObserver(fn).observe(el,{childList:true,characterData:true,subtree:true});
+    fn();
+  }
+  watch('algS',renderS);
+  watch('algO',renderO);
+})();
+</script>
 <!-- Toast -->
 <div class="tt" id="tt" style="display:none"></div>
 <!-- JavaScript (urutan penting: main.js harus terakhir) -->
-<script src="js/config.js"></script>
+<script src="js/config.js"></script> 
 <script src="js/utils.js"></script>
 <script src="js/data.js"></script>
 <script src="js/algoritma.js"></script>
